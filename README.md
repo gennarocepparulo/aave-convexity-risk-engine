@@ -104,7 +104,7 @@ Liquidation probability increases with volatility, but the response is smooth aw
 ---
 
 ### Figure 2 — Time‑to‑Liquidation Distribution
-figures/fig2_time_to_liquidation_distribution.png
+![Figure 2 — Time‑to‑Liquidation Distribution](figures/fig2_time_to_liquidation_distribution.png)
 
 Conditional distribution of liquidation times shows **diffusion‑driven erosion**: failures are neither immediate nor purely terminal, indicating path dependence.
 
@@ -113,14 +113,15 @@ Conditional distribution of liquidation times shows **diffusion‑driven erosion
 ## 5. Convexity Insight Layer (Day 5)
 
 ### Figure 4 — Liquidation Probability vs Initial Health Factor
-figures/fig4_liquidation_probability_vs_HF0.png
+![Figure 4 — Liquidation Probability vs Initial Health Factor](figures/fig4_liquidation_probability_vs_HF0.png)
+
 
 Holding volatility fixed, liquidation probability increases **convexly** as $HF_0$ approaches the boundary. Far from the boundary, leverage changes matter little; near it, small changes have large effects.
 
 ---
 
 ### Figure 6 — Sensitivity $dP/dHF_0$
-figures/fig6_sensitivity_vs_distance.png
+![Figure 6 — Sensitivity vs Distance to Boundary](figures/fig6_sensitivity_vs_distance.png)
 
 Local sensitivity reveals that convexity is **sharply concentrated near $HF=1$**. Volatility shifts where convexity activates but does not create it.
 
@@ -129,21 +130,21 @@ Local sensitivity reveals that convexity is **sharply concentrated near $HF=1$**
 ## 6. Stress Scenarios (Day 6)
 
 ### Scenario 1 — Volatility Spike
-figures/fig7_volatility_spike_distribution.png
+![Figure 7 — Volatility Spike Distribution Shift](figures/fig7_volatility_spike_distribution.png)
 
 A volatility shock ($\sigma: 0.4 \rightarrow 1.0$) increases liquidation probability and **front‑loads failures**, shifting liquidation times earlier. Volatility acts as an **accelerator**.
 
 ---
 
 ### Scenario 2 — Health Factor Compression
-figures/fig8_hf_compression_convexity.png
+![Figure 8 — Health Factor Compression Convexity](figures/fig8_hf_compression_convexity.png)
 
 Compressing $HF_0$ ($2.0 \rightarrow 1.2$) at fixed volatility produces a **convex explosion** in liquidation probability, isolating boundary‑driven risk.
 
 ---
 
 ### Figure 5 — Liquidation Risk Surface (Core Result)
-figures/fig5_liquidation_risk_surface.png
+![Figure 5 — Liquidation Risk Surface](figures/fig5_liquidation_risk_surface.png)
 
 **Axes:** x = initial Health Factor $HF_0$; y = volatility $\sigma$; color = liquidation probability.
 
@@ -185,7 +186,7 @@ This project extends prior AMM convexity analysis to **DeFi credit risk**.
 ## 9. Supporting Diagnostics (Appendix)
 
 ### Figure 9 — Time‑Conditioned Hazard (Appendix)
-figures/fig9_hazard_rate_time.png
+![Figure 9 — Time‑Conditioned Hazard](figures/fig9_hazard_rate_time.png)
 
 The time‑conditioned hazard confirms non‑memoryless behavior but is dominated by boundary effects. State‑conditioned measures provide clearer economic insight.
 
