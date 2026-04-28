@@ -137,7 +137,7 @@ A volatility shock ($\sigma: 0.4 \rightarrow 1.0$) increases liquidation probabi
 ---
 
 ### Scenario 2 — Health Factor Compression
-![Figure 8 — Health Factor Compression Convexity](figures/fig8_hf_compression_convexity.png)
+![Figure 8 — Health Factor Compression Convexity](figures/fig8_hf_compression.png)
 
 Compressing $HF_0$ ($2.0 \rightarrow 1.2$) at fixed volatility produces a **convex explosion** in liquidation probability, isolating boundary‑driven risk.
 
