@@ -97,7 +97,7 @@ All experiments vary **one dimension at a time** to isolate mechanisms.
 ## 4. Baseline Dynamics (Day 4)
 
 ### Figure 1 — Liquidation Probability vs Volatility
-figures/fig1_liquidation_probability_vs_volatility.png
+![Figure 1 — Liquidation Probability vs Volatility](figures/fig1_liquidation_probability_vs_volatility.png)
 
 Liquidation probability increases with volatility, but the response is smooth away from the boundary. Volatility alone does not generate strong convexity.
 
