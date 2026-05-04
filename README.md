@@ -221,3 +221,160 @@ The boundary-driven structure of liquidation risk has direct implications:
 
 ## Conclusion
 Aave liquidation risk is governed by a **nonlinear, boundary‑driven risk surface**. Understanding this geometry is essential for protocol design, risk management, and governance. This project provides a compact simulation framework to visualize and reason about that surface.
+# Systemic Liquidation Risk in Aave
+
+> **TL;DR**  
+> Liquidation risk in Aave is a *phase phenomenon*. Volatility shifts the regime boundary between efficient liquidation and systemic cascades, while liquidity constraints primarily alter *how* stress propagates rather than *where* regimes change. Protocol stability is therefore **state‑dependent**: parameters calibrated in calm markets may become insufficient under stress.
+
+---
+
+## 1. Motivation
+
+Liquidations in DeFi lending protocols are often analyzed at the level of individual positions. However, protocol‑level failures emerge from *interactions*: execution frictions, price impact, and feedback loops that couple many positions through a shared market.
+
+This project asks a focused question:
+
+> **When do local liquidations turn into systemic cascades?**
+
+We answer this by moving progressively from single‑position convexity to a minimal system‑level cascade model and by mapping the resulting **phase structure** under stress.
+
+---
+
+## 2. Core Mechanism
+
+### 2.1 Boundary‑Driven Risk
+
+Aave enforces solvency through a Health Factor (HF) threshold. Liquidation risk is therefore a **boundary‑crossing problem**, not a smooth loss process. This generates convexity: small price moves near the boundary produce large changes in liquidation risk.
+
+---
+
+### 2.2 Probabilistic Liquidation Execution
+
+Instead of assuming mechanical execution when \(HF < 1\), liquidation is modeled as a **stochastic execution process**:
+
+\[
+\pi_{i,t}
+=
+\mathbf{1}_{\text{oracle active}}
+\cdot
+\sigma\!\left(\frac{\beta - \lambda Q S_t}{\varepsilon}\right)
+\cdot
+\sigma\!\left(\frac{1 - HF_{i,t}}{\delta}\right)
+\]
+
+where:
+- \(\beta\) is the liquidation bonus,
+- \(\lambda\) captures market impact,
+- the first sigmoid models *economic profitability*,
+- the second sigmoid models *agent‑specific urgency* (distance to the boundary).
+
+Liquidation becomes a **Bernoulli event** conditioned on system state. This avoids degenerate hard constraints and allows execution frictions to matter.
+
+---
+
+## 3. From Single Positions to Cascades
+
+A minimal feedback loop is introduced:
+
+1. Some positions liquidate (probabilistically).
+2. Liquidations sell collateral.
+3. Selling depresses the market price.
+4. Lower prices push other positions toward the HF boundary.
+
+This loop is sufficient to generate **nonlinear amplification** and **system‑wide cascades**.
+
+---
+
+## 4. Phase Diagram: Existence of Cascades (Day 4)
+
+We map the average cascade size as a function of:
+- **x‑axis:** price impact \(\lambda\),
+- **y‑axis:** liquidation bonus \(\beta\).
+
+The result is a clear phase structure with three regimes:
+- **Stable:** isolated liquidations, no propagation,
+- **Fragile:** path‑dependent outcomes, large variance,
+- **Collapse:** system‑wide liquidation cascades.
+
+![Cascade Phase Diagram](figures/cascade.png)
+
+**Figure 1 —** Cascade phase diagram showing the transition from stable to collapse regimes as a function of liquidation incentives and price impact.
+
+---
+
+## 5. Stress Testing the Phase Boundary (Day 5)
+
+### 5.1 Volatility Stress
+
+Increasing price volatility does **not** merely increase liquidation activity. It **shifts the critical phase boundary**:
+
+- For a given \(\beta\), cascades occur at *lower* \(\lambda\).
+- The entire instability region expands.
+
+This shows that **protocol stability is state‑dependent**: parameters safe in calm markets may fail under volatility stress.
+
+---
+
+### 5.2 Liquidity Thinning
+
+Liquidity constraints reduce execution probability. In this minimal model, liquidity stress:
+
+- increases latent vulnerability (toxic positions linger),
+- but dampens immediate propagation by suppressing execution.
+
+As a result, liquidity stress mainly affects *dynamics and variance*, not the mean phase boundary.
+
+---
+
+### 5.3 Combined Stress: Non‑Additivity
+
+Overlaying baseline, volatility stress, and combined volatility + liquidity stress yields a subtle but important result:
+
+![Cascade Phase Boundary Under Stress](figures/overlay_test.png)
+
+**Figure 2 —** Phase boundary under stress.  
+White: baseline.  
+Red: volatility stress.  
+Orange: volatility + liquidity stress.
+
+**Key observation:**
+- Volatility alone shifts the boundary.
+- Adding liquidity stress does *not* further shift it significantly.
+
+This demonstrates **non‑additive stress interactions**: different stressors act on different components of the liquidation mechanism and can partially offset at the regime level, even though internal dynamics change substantially.
+
+---
+
+## 6. Interpretation and Design Implications
+
+1. **Volatility is the dominant regime‑shifting stressor.**  
+   It determines whether the system enters a fragile or collapse regime.
+
+2. **Liquidity constraints are propagation modifiers.**  
+   They affect timing, persistence, and uncertainty, rather than the location of regime boundaries.
+
+3. **Boundary stability does not imply dynamic similarity.**  
+   Similar phase boundaries can mask very different internal dynamics (fast cascades vs slow‑burn stress).
+
+4. **Static calibration is insufficient.**  
+   Liquidation parameters calibrated under normal conditions may be inadequate during stressed states.
+
+---
+
+## 7. Limitations and Extensions
+
+This is a deliberately minimal model. It abstracts from:
+- close‑factor mechanics (partial liquidation),
+- credit constraints of flash‑loan‑based liquidators,
+- protocol‑level feedbacks such as stablecoin (GHO) dynamics.
+
+These features are important and can be layered on top, but the results here already show that **systemic risk emerges before full realism is added**.
+
+---
+
+## 8. Main Takeaway
+
+> **Systemic liquidation risk in Aave is a phase phenomenon driven by boundary convexity and feedback. Volatility shifts regime boundaries, while liquidity shapes propagation. Protocol safety is therefore inherently state‑dependent.**
+
+This framework provides a foundation for stress‑aware parameter design and for extending analysis to protocol‑level feedbacks.
+``
